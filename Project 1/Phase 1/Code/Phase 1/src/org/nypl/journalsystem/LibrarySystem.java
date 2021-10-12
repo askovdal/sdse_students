@@ -2,12 +2,38 @@ package org.nypl.journalsystem;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 
 public class LibrarySystem {
+	private List<Journal> journals;
 
-	public LibrarySystem() {
+	public LibrarySystem() throws FileNotFoundException, IOException {
 		// TODO: Initialize system with default journals
+		File file = new File("data/Journals.csv");
+		Reader in = new FileReader(file);
+
+		Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(in);
+
+		journals = new ArrayList<Journal>();
+		for (CSVRecord record : records) {
+			if (record.getRecordNumber() == 1) {
+				continue;
+			}
+
+			System.out.println(record.toString());
+
+			Journal journal = new Journal(record.get(0));
+			journals.add(journal);
+		}
+
+		System.out.println(journals);
 	}
 
 	public void load() throws FileNotFoundException, IOException {
