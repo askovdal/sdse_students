@@ -8,22 +8,43 @@ import org.apache.commons.csv.CSVRecord;
 
 public class LibrarySystem {
 
+    private List<Publisher> publishers;
     private List<Journal> journals;
+    private List<Author> authors;
+    private List<Article> articles;
+
+    private CSVFormat format = CSVFormat.RFC4180
+        .withFirstRecordAsHeader()
+        .withIgnoreSurroundingSpaces();
 
     public LibrarySystem() throws FileNotFoundException, IOException {
-        // TODO: Initialize system with default journals
         File file = new File("data/Journals.csv");
         Reader in = new FileReader(file);
 
-        Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(in);
+        Iterable<CSVRecord> records = format.parse(in);
 
-        journals = new ArrayList<Journal>();
+        publishers = new ArrayList<>();
+        journals = new ArrayList<>();
         for (CSVRecord record : records) {
-            if (record.getRecordNumber() == 1) {
-                continue;
+            Publisher publisher = new Publisher(
+                record.get("Publisher"),
+                record.get("Location")
+            );
+
+            if (
+                publishers
+                    .stream()
+                    .noneMatch(p -> p.getName().equals(publisher.getName()))
+            ) {
+                publishers.add(publisher);
             }
 
-            Journal journal = new Journal(record.get(0));
+            Journal journal = new Journal(
+                record.get("ISSN"),
+                record.get("Name"),
+                publisher
+            );
+
             journals.add(journal);
         }
     }
@@ -35,12 +56,50 @@ public class LibrarySystem {
 
     protected void loadAuthors() throws FileNotFoundException, IOException {
         File file = new File("data/Authors.csv");
-        // TODO: Load authors from file
+        Reader in = new FileReader(file);
+
+        Iterable<CSVRecord> records = format.parse(in);
+
+        authors = new ArrayList<>();
+        for (CSVRecord record : records) {
+            Author author = new Author(
+                Integer.parseInt(record.get("ID")),
+                record.get("Name")
+            );
+
+            authors.add(author);
+        }
+    }
+
+    protected Author getAuthor(int id) {
+        for (Author author : authors) {
+            if (author.getId() == id) {
+                return author;
+            }
+        }
+        return null;
     }
 
     protected void loadArticles() throws FileNotFoundException, IOException {
         File file = new File("data/Articles.csv");
-        // TODO: Load articles from file and assign them to appropriate journal
+        Reader in = new FileReader(file);
+
+        Iterable<CSVRecord> records = format.parse(in);
+
+        articles = new ArrayList<>();
+        for (CSVRecord record : records) {
+            // TODO: Loop through article's authors and add them to the article
+            //  object
+            Author author = getAuthor(3);
+
+            Article article = new Article(
+                Integer.parseInt(record.get("ID")),
+                record.get("Title")
+            );
+
+            articles.add(article);
+            // TODO: Assign article to the appropriate journal
+        }
     }
 
     public void listContents() {

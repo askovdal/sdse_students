@@ -4,17 +4,15 @@ import java.util.List;
 
 public class Journal {
 
+    private String issn;
     private String name;
     private Publisher publisher;
-    private String issn;
     private List<Article> articles;
 
-    //	public Journal(String name, Publisher publisher, String issn, List<Article> articles) {
-    //
-    //	}
-
-    public Journal(String name) {
+    public Journal(String issn, String name, Publisher publisher) {
+        this.issn = issn;
         this.name = name;
+        this.publisher = publisher;
     }
 
     public boolean isFullIssue() {
