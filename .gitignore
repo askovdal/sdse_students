@@ -3,3 +3,5 @@ bin/
 ~*
 .metadata/
 desktop.ini
+.idea/
+*.iml
