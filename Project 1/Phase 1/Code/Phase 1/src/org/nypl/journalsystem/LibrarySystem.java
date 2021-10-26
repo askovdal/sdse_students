@@ -1,13 +1,13 @@
 package org.nypl.journalsystem;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVRecord;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 
 public class LibrarySystem {
+
     private List<Journal> journals;
 
     public LibrarySystem() throws FileNotFoundException, IOException {
@@ -23,13 +23,9 @@ public class LibrarySystem {
                 continue;
             }
 
-            System.out.println(record.toString());
-
             Journal journal = new Journal(record.get(0));
             journals.add(journal);
         }
-
-        System.out.println(journals);
     }
 
     public void load() throws FileNotFoundException, IOException {
@@ -39,13 +35,11 @@ public class LibrarySystem {
 
     protected void loadAuthors() throws FileNotFoundException, IOException {
         File file = new File("data/Authors.csv");
-
         // TODO: Load authors from file
     }
 
     protected void loadArticles() throws FileNotFoundException, IOException {
         File file = new File("data/Articles.csv");
-
         // TODO: Load articles from file and assign them to appropriate journal
     }
 
