@@ -1,4 +1,3 @@
 package eu.portunus.core;
 
-public interface IPasswordLibrary extends IPasswordEntryContainer {
-}
+public interface IPasswordLibrary extends IPasswordEntryContainer {}
